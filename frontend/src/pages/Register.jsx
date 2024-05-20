@@ -5,6 +5,7 @@ import {FaUser} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import {useSelector, useDispatch} from 'react-redux'
 import {register, reset} from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -33,15 +34,19 @@ function Register() {
     }, [isError, isSuccess, user, message, navigate, dispatch])
 
     const onChange = (e)=> {
+        console.log('onChange')
+        
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }))
     }
+    
     const onSubmit = (e)=>{
         console.log('Hello')
-        e.prevent.Default()
-        console.log(password, password2)
+        console.log('e: ', e)
+        e.preventDefault()
+        console.log('e', e.target.value)
         if(password !== password2){
             toast.error('Passwords do not match')
         } else {
@@ -52,6 +57,10 @@ function Register() {
             }
             dispatch(register(userData))
         }
+    }
+
+    if (isLoading){
+        return <Spinner />
     }
 
     return (
